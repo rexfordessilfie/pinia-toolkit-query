@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios'
-import type { BaseQueryFn, QueryFnOptions } from './defineApi.types'
+import type { BaseQueryFn, QueryFnOptions } from '@/lib/defineApi.types'
 import * as axios from 'axios'
 
 export type ApiErrorDetails = {

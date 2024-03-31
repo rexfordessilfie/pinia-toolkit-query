@@ -7,8 +7,6 @@ import type {
   QueryStoreState,
   QueryType
 } from './defineApi.types'
-import { axiosBaseQuery } from './axiosBaseQueryFn'
-import * as axios from 'axios'
 import { computed, ref, unref, watch } from 'vue'
 
 type EndpointName = string | number | symbol
@@ -284,29 +282,3 @@ export const defineApi = <
 
   return value
 }
-
-const client = axios.default.create({
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
-
-export const pokemonApi = defineApi({
-  name: 'pokeApi',
-  baseQueryFn: axiosBaseQuery(client),
-  endpoints: (builder) => ({
-    getPokemon: builder.query<{ name: string }, { age: number }>({
-      query: (args) => ({
-        url: `https://pokeapi.co/api/v2/pokemon/${args.name}`,
-        method: 'get'
-      })
-    }),
-    addPost: builder.mutation<{ title: string }, { id: number }>({
-      query: (args) => ({
-        url: `https://jsonplaceholder.typicode.com/posts`,
-        method: 'post',
-        body: args
-      })
-    })
-  })
-})

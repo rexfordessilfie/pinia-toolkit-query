@@ -1,5 +1,5 @@
 <script setup>
-import { api } from '@/lib'
+import { api } from '@/stores/api'
 import { computed, ref } from 'vue'
 
 const name = ref('bulbasaur')

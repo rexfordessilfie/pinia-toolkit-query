@@ -1,6 +1,6 @@
 import * as axios from 'axios'
-import { defineApi } from './defineApi'
 import { axiosBaseQuery } from './axiosBaseQueryFn'
+import { defineApi } from '@/lib/defineApi'
 
 const client = axios.default.create({
   headers: {
