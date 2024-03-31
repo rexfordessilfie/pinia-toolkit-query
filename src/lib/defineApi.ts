@@ -116,11 +116,11 @@ export const defineApi = <
 
   const useApiStore = defineStore({
     id: options.name,
-    state: (): QueryStoreState => ({}),
+    state: (): { queries: QueryStoreState } => ({ queries: {} }),
     getters: {
       result: (state) => (endpoint: string, args?: unknown) => {
         const key = getCacheKey(endpoint, args)
-        return state[key] ?? defaultQueryResult
+        return state.queries[key] ?? defaultQueryResult
       }
     },
     actions: {
@@ -140,13 +140,15 @@ export const defineApi = <
             : getCacheKey(endpoint, args)
 
         const shouldFetch =
-          !this[cacheKey]?.isInitialized || opts.forceRefetch || this[cacheKey]?.isError
+          !this.queries[cacheKey]?.isInitialized ||
+          opts.forceRefetch ||
+          this.queries[cacheKey]?.isError
 
         if (!shouldFetch) {
           return
         }
 
-        this[cacheKey] = {
+        this.queries[cacheKey] = {
           ...defaultQueryResult,
           isLoading: true
         }
@@ -160,8 +162,8 @@ export const defineApi = <
           const result = await queryFulfilled
           console.log({ result })
 
-          this[cacheKey] = {
-            ...this[cacheKey],
+          this.queries[cacheKey] = {
+            ...this.queries[cacheKey],
             isSuccess: result.data !== undefined,
             isError: result.error !== undefined,
             isLoading: false,
@@ -176,10 +178,10 @@ export const defineApi = <
             }
           }
 
-          return this[cacheKey]
+          return this.queries[cacheKey]
         } catch (error) {
-          this[cacheKey] = {
-            ...this[cacheKey],
+          this.queries[cacheKey] = {
+            ...this.queries[cacheKey],
             isSuccess: false,
             isLoading: false,
             isError: true,
